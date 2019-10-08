@@ -1,10 +1,14 @@
 import React, { Component } from "react";
 import { getMovies } from "../service/fakeMovieService";
+import Pagination from "./common/pagination";
 import Like from "./common/like";
+import { paginate } from "../utils/paginate";
 
 class Vidly extends Component {
   state = {
-    movies: getMovies()
+    movies: getMovies(),
+    pageSize: 4,
+    currentPage: 1
   };
 
   handleLike = movie => {
@@ -20,11 +24,17 @@ class Vidly extends Component {
     this.setState({ movies: movies });
   };
 
+  handlePageChange = page => {
+    this.setState({ currentPage: page });
+  };
+
   render() {
     const { length: movieCount } = this.state.movies;
+    const { currentPage, pageSize, movies: allMovies } = this.state;
     if (movieCount === 0) {
       return <p>There are no movies</p>;
     }
+    const movies = paginate(allMovies, currentPage, pageSize);
 
     return (
       <React.Fragment>
@@ -42,7 +52,7 @@ class Vidly extends Component {
           </thead>
 
           <tbody>
-            {this.state.movies.map(movie => (
+            {movies.map(movie => (
               <tr key={movie._id}>
                 <td>{movie.title}</td>
                 <td>{movie.genre.name}</td>
@@ -66,6 +76,12 @@ class Vidly extends Component {
             ))}
           </tbody>
         </table>
+        <Pagination
+          itemsCount={movieCount}
+          pageSize={pageSize}
+          onPageChange={this.handlePageChange}
+          currentPage={currentPage}
+        />
       </React.Fragment>
     );
   }
