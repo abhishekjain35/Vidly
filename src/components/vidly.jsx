@@ -63,20 +63,16 @@ class Vidly extends Component {
     const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
     const movies = paginate(sorted, currentPage, pageSize);
 
-    return {totalCount: filtered.length, data: movies}
-  }
+    return { totalCount: filtered.length, data: movies };
+  };
 
   render() {
     const { length: movieCount } = this.state.movies;
-    const {
-      currentPage,
-      pageSize,
-      sortColumn
-    } = this.state;
+    const { currentPage, pageSize, sortColumn } = this.state;
     if (movieCount === 0) {
       return <p>There are no movies</p>;
     }
-    const {totalCount , data: movies} = this.getPagedData();
+    const { totalCount, data: movies } = this.getPagedData();
     return (
       <div className="row">
         <div className="col-3 m-2">
