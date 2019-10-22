@@ -22,7 +22,6 @@ class LoginForm extends Form {
   };
 
   render() {
-    
     return (
       <div>
         <h1>Login!</h1>
